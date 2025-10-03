@@ -7,6 +7,7 @@
     "icon": "https://raw.githubusercontent.com/thsrite/MoviePilot-Plugins/main/icons/create.png",
     "author": "dogzong",
     "level": 1,
+    "v2": true,
     "history": {
       "v1.0.1": "首次发布，支持AI智能命名的云盘Strm文件生成"
     }
