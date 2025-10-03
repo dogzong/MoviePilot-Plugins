@@ -12,9 +12,6 @@
     "level": 1,
     "has_page": false,
     "valid": true,
-    "plugin_order": 27,
-    "history": {
-      "v1.0.1": "首次发布，支持AI智能命名的云盘Strm文件生成"
-    }
+    "plugin_order": 27
   }
 }
