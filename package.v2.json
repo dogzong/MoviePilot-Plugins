@@ -1,0 +1,25 @@
+[
+  {
+    "id": "CloudStrmAI",
+    "name": "云盘StrmAI",
+    "description": "AI智能命名的云盘Strm生成器，自动识别中英文标题提高刮削准确率。支持多季嵌套结构智能识别。",
+    "labels": "云盘,Strm,AI智能命名",
+    "version": "1.0.1",
+    "icon": "https://raw.githubusercontent.com/thsrite/MoviePilot-Plugins/main/icons/create.png",
+    "author": "dogzong",
+    "author_url": "https://github.com/dogzong",
+    "repo_url": "https://github.com/dogzong/MoviePilot-Plugins",
+    "category": "工具",
+    "level": 1,
+    "has_page": false,
+    "valid": true,
+    "plugin_order": 27,
+    "history": [
+      {
+        "version": "1.0.1",
+        "date": "2024-10-03",
+        "changes": "首次发布，支持AI智能命名的云盘Strm文件生成"
+      }
+    ]
+  }
+]
