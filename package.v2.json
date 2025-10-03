@@ -1,6 +1,5 @@
-[
-  {
-    "id": "cloudstrmai",
+{
+  "cloudstrmai": {
     "name": "云盘StrmAI",
     "description": "AI智能命名的云盘Strm生成器，自动识别中英文标题提高刮削准确率。支持多季嵌套结构智能识别。",
     "labels": "云盘,Strm,AI智能命名",
@@ -22,4 +21,4 @@
       }
     ]
   }
-]
+}
