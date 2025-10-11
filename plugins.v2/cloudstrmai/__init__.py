@@ -397,7 +397,7 @@ class CloudStrmAI(_PluginBase):
     # 插件图标
     plugin_icon = "https://raw.githubusercontent.com/thsrite/MoviePilot-Plugins/main/icons/create.png"
     # 插件版本
-    plugin_version = "1.0.4"
+    plugin_version = "1.0.3"
     # 插件作者
     plugin_author = "dogzong"
     # 作者主页
@@ -587,28 +587,7 @@ class CloudStrmAI(_PluginBase):
                         if not self._copy_files and Path(file).suffix.lower() not in settings.RMT_MEDIAEXT:
                             continue
 
-                        # 检查源文件是否在缓存中 + 目标strm是否存在
-                        needs_processing = False
-                        
                         if source_file not in self.__cloud_files:
-                            # 新文件，需要处理
-                            needs_processing = True
-                        else:
-                            # 文件在缓存中，但需要检查目标strm是否存在
-                            # 先临时计算strm路径（不使用AI，避免重复调用）
-                            dest_file = source_file.replace(source_dir, self._dirconf.get(source_dir, ""))
-                            if Path(dest_file).suffix.lower() in settings.RMT_MEDIAEXT:
-                                # 简单路径：不考虑AI命名的情况
-                                simple_strm_path = os.path.join(
-                                    Path(dest_file).parent,
-                                    f"{os.path.splitext(Path(dest_file).name)[0]}.strm"
-                                )
-                                if not Path(simple_strm_path).exists():
-                                    # strm文件不存在，需要重新生成
-                                    needs_processing = True
-                                    logger.info(f"🔄 [CloudStrmAI] 检测到缺失strm: {Path(simple_strm_path).name}")
-                        
-                        if needs_processing:
                             folder_path = str(Path(source_file).parent)
                             if folder_path not in new_folder_files:
                                 new_folder_files[folder_path] = []
@@ -708,55 +687,6 @@ class CloudStrmAI(_PluginBase):
         """保存文件列表"""
         with open(self.__cloud_files_json, 'w') as file:
             file.write(json.dumps(self.__cloud_files))
-
-    def _calculate_strm_path(self, source_file: str, source_dir: str, folder_info: Dict = None) -> Optional[str]:
-        """计算strm文件的预期路径（用于检测是否存在）
-        
-        Args:
-            source_file: 源文件路径
-            source_dir: 源目录
-            folder_info: 文件夹信息（AI分析结果）
-            
-        Returns:
-            str: 预期的strm文件路径，如果无法计算则返回None
-        """
-        try:
-            dest_dir = self._dirconf.get(source_dir)
-            if not dest_dir:
-                return None
-                
-            dest_file = source_file.replace(source_dir, dest_dir)
-            
-            if Path(dest_file).suffix.lower() not in settings.RMT_MEDIAEXT:
-                return None
-            
-            video_name = Path(dest_file).name
-            dest_path = Path(dest_file).parent
-            
-            # 如果启用AI命名，预测AI生成的路径
-            if self._ai_namer and folder_info:
-                try:
-                    folder_name = Path(source_file).parent.name
-                    original_filename = Path(source_file).name
-                    
-                    ai_result = self._ai_namer.get_ai_filename(folder_name, original_filename, folder_info)
-                    
-                    if ai_result:
-                        ai_filename, ai_foldername = ai_result
-                        video_name = ai_filename
-                        
-                        if ai_foldername:
-                            parent_path = dest_path.parent
-                            dest_path = parent_path / ai_foldername
-                except Exception as e:
-                    logger.debug(f"[CloudStrmAI] AI路径计算失败: {str(e)}")
-            
-            strm_path = os.path.join(dest_path, f"{os.path.splitext(video_name)[0]}.strm")
-            return strm_path
-            
-        except Exception as e:
-            logger.error(f"[CloudStrmAI] 计算strm路径失败: {e}")
-            return None
 
     def __strm(self, source_file, folder_info: Dict = None):
         """生成strm文件"""
